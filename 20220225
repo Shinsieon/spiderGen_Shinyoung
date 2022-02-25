@@ -1,0 +1,29 @@
+많은 양의 TabView 로 이루어진 화면은 네이티브 backBtn 을 터치시 세밀한 제어가 필요하다.
+
+Page들로만 이어진 화면이라면 네이티브 뒤로가기 버튼을 눌렀을 때 theApp.goPrevPage() 라는 함수로 지금까지 쌓인 Page History 에서 가장 마지막에 쌓인 페이지로 이동하면 된다.
+
+하지만, TabView로 이어져있다면 예를들어 비대면 계좌개설..
+
+사용자가 계좌개설을 하다가 직전 단계로 이동하고자 네이티브 뒤로가기 버튼을 눌렀을 때 페이지 이동으로 처리해버리면 모든 단계가 취소되기 때문에 이전 탭으로의 이동으로 이벤트를 처리해야한다
+
+따라서 theApp(가장 상위에서 제어하는 클래스) 에서 해당 페이지에 탭뷰가 있는지 확인함과 동시에 onBackKey()라는 메서드가 있는지 확인한 후 만약 onBackKey()의 리턴값이 true라면 페이지이동
+처리를 하지 않는 로직을 추가적으로 구현해야한다.
+
+즉, theApp에서는
+document.addEventListener('backbutton', function() { this.onBackKeyManage();}, false);
+
+로 네이티브 뒤로가기 버튼을 눌렀을 때 onBackKeyManage()라는 함수를 실행하고
+
+function SmartreePlusRenewApp*onBackKeyManage() {
+if(view && view.onBackKey && view.onBackKey()) return true;
+else if(theApp.subNavi.canGoPrev()){ theApp.subNavi.goPrevPage(); return true;}
+}
+
+onBackKeyManage()라는 함수는 위와 같이 구현하여 해당 페이지에서 onBackKey()라는 메서드가 있는지 확인한 다음 만약 리턴 값이 true라면 페이지 이동을 하지 않도록 구현한다.
+
+이후 해당 페이지에서는 onBackKey() 메서드 안에 탭간의 이동을 구현하면 된다.
+
+function ___*onBackKey() { 
+  //탭 이동 구현
+  return true; 
+} 
