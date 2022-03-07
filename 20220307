@@ -1,0 +1,29 @@
+나의 자산 oltp 전달 받아서 개발 진행
+-사용자로부터 Date를 입력받아 서버에서 필요로하는 input format으로 변환뒤 쿼리 통신
+-받아온 데이터를 기반으로 차트를 그려주는 기능 개발
+JS reduce함수 사용(반복문을 사용하지 않고 합계를 구하는 방법)
+var array = [1,2,3,4,5];
+var sum = arr.reduce(function(acc, comp)
+  {
+    return acc + comp;
+  },0);
+  
+  
+3개월, 12개월, 1개월 전 날짜 구하는 함수
+
+var today = new Date();
+
+function getYesterday(today)
+{
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+}
+
+function get3MBefore(today)
+{
+  return new Date(today.getFullYear(), today.getMonth()-3, today.getDate());
+}
+
+function getLastYear(today)  //12개월을 계산하려면 월에서 11을 빼준 다음 초일을 구해야한다.
+{
+  return new Date(today.getFullYear(), today.getMonth()-11, 1);
+}
